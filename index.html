@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGAC Japan Connect</title>
+    <title>SGAC Japan</title>
     <style>
         * {
             margin: 0;
@@ -12,7 +12,6 @@
         }
 
         :root {
-            /* Logo-inspired color palette */
             --primary-purple: #6B4B6B;
             --light-cream: #F5F0E8;
             --dark-blue: #1E3A5F;
@@ -40,7 +39,6 @@
             overflow: hidden;
         }
 
-        /* Header with Logo */
         .header {
             background: linear-gradient(90deg, var(--primary-purple) 0%, var(--dark-blue) 100%);
             color: var(--text-light);
@@ -66,6 +64,7 @@
             background: white;
             padding: 5px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            flex-shrink: 0;
         }
 
         .logo-container img {
@@ -75,20 +74,9 @@
             border-radius: 50%;
         }
 
-        .header-title {
-            display: flex;
-            flex-direction: column;
-        }
-
         .header-title h1 {
             font-size: 28px;
             font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .header-title p {
-            font-size: 14px;
-            opacity: 0.9;
         }
 
         .language-toggle {
@@ -108,7 +96,6 @@
             transform: scale(1.05);
         }
 
-        /* Navigation Tabs */
         .tabs {
             display: flex;
             background: var(--primary-purple);
@@ -140,7 +127,6 @@
             border-bottom: 3px solid var(--accent-pink);
         }
 
-        /* Content Area */
         .content {
             padding: 30px;
         }
@@ -159,7 +145,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Dashboard Stats */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -174,6 +159,13 @@
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 4px 15px rgba(107, 75, 107, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(107, 75, 107, 0.5);
         }
 
         .stat-number {
@@ -187,7 +179,6 @@
             opacity: 0.95;
         }
 
-        /* Section Styling */
         .section {
             background: white;
             padding: 25px;
@@ -211,7 +202,52 @@
             margin-bottom: 10px;
         }
 
-        /* Form Styling */
+        /* Collapsible Form Sections */
+        .collapsible-header {
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink));
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .collapsible-header:hover {
+            transform: translateX(5px);
+        }
+
+        .collapsible-header::after {
+            content: '▼';
+            transition: transform 0.3s;
+        }
+
+        .collapsible-header.active::after {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .collapsible-content.active {
+            max-height: 2000px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        .form-inner {
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 0 0 8px 8px;
+        }
+
         .form-group {
             margin-bottom: 15px;
         }
@@ -241,6 +277,26 @@
             border-color: var(--accent-pink);
         }
 
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
         button.primary {
             background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink));
             color: white;
@@ -259,10 +315,9 @@
             box-shadow: 0 6px 20px rgba(107, 75, 107, 0.4);
         }
 
-        /* Member Cards */
         .member-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
             margin-top: 20px;
         }
@@ -274,6 +329,7 @@
             border: 2px solid var(--border-color);
             transition: all 0.3s;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
         }
 
         .member-card:hover {
@@ -282,11 +338,45 @@
             box-shadow: 0 6px 20px rgba(107, 75, 107, 0.2);
         }
 
+        .card-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 5px;
+            transition: all 0.3s;
+        }
+
+        .edit-btn {
+            color: var(--accent-pink);
+        }
+
+        .edit-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .delete-btn {
+            color: #d63031;
+        }
+
+        .delete-btn:hover {
+            transform: scale(1.2);
+        }
+
         .member-name {
             color: var(--primary-purple);
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 8px;
+            padding-right: 60px;
         }
 
         .member-role {
@@ -302,7 +392,22 @@
             margin: 5px 0;
         }
 
-        /* Event Cards */
+        .member-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background: var(--cherry-blossom);
+            color: var(--primary-purple);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
         .event-card {
             background: white;
             padding: 20px;
@@ -310,6 +415,7 @@
             margin-bottom: 15px;
             border-left: 4px solid var(--accent-pink);
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
         }
 
         .event-title {
@@ -317,6 +423,7 @@
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 10px;
+            padding-right: 60px;
         }
 
         .event-date {
@@ -325,7 +432,18 @@
             margin-bottom: 5px;
         }
 
-        /* Mobile Responsive */
+        .event-link {
+            color: var(--dark-blue);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .event-link:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 768px) {
             .header {
                 padding: 15px 20px;
@@ -338,10 +456,6 @@
 
             .header-title h1 {
                 font-size: 20px;
-            }
-
-            .header-title p {
-                font-size: 12px;
             }
 
             .tabs {
@@ -379,15 +493,14 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <div class="header-left">
                 <div class="logo-container">
-                    <img src="logo.jpg" alt="SGAC Japan Logo" onerror="this.style.display='none'">
+                    <img src="logo.jpg" alt="SGAC Japan Logo" id="mainLogo" 
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ccircle cx=%2750%27 cy=%2750%27 r=%2745%27 fill=%27%236B4B6B%27/%3E%3Ctext x=%2750%27 y=%2755%27 font-size=%2724%27 fill=%27white%27 text-anchor=%27middle%27 font-weight=%27bold%27%3ESGAC%3C/text%3E%3Ctext x=%2750%27 y=%2772%27 font-size=%2716%27 fill=%27%23E8B4D4%27 text-anchor=%27middle%27%3EJAPAN%3C/text%3E%3C/svg%3E';">
                 </div>
                 <div class="header-title">
-                    <h1 id="headerTitle">SGAC Japan Connect</h1>
-                    <p id="headerSubtitle">スペース世代諮問委員会 日本支部</p>
+                    <h1 id="headerTitle">SGAC Japan</h1>
                 </div>
             </div>
             <button class="language-toggle" onclick="toggleLanguage()">
@@ -395,7 +508,6 @@
             </button>
         </div>
 
-        <!-- Navigation Tabs -->
         <div class="tabs">
             <button class="tab-button active" onclick="openTab(event, 'dashboard')" id="tabDashboard">
                 <span class="tab-text">ダッシュボード</span>
@@ -411,68 +523,87 @@
             </button>
         </div>
 
-        <!-- Content Area -->
         <div class="content">
             <!-- Dashboard Tab -->
             <div id="dashboard" class="tab-content active">
                 <div class="section">
                     <h2 id="dashTitle">ダッシュボード</h2>
-                    <p id="dashDesc">SGAC Japanのメンバー、イベント、コミュニティ、プロジェクトを1つにまとめます。</p>
+                    <p id="dashDesc">Space Generation Advisory Council (SGAC)は、宇宙分野の次世代リーダーを育成する国際ネットワークです。日本支部では、学生や若手専門家が交流し、宇宙政策や技術開発に関する活動を行っています。</p>
                 </div>
 
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number" id="memberCount">28</div>
+                    <div class="stat-card" onclick="openTab(event, 'members'); document.getElementById('tabMembers').click();">
+                        <div class="stat-number" id="memberCount">4</div>
                         <div class="stat-label" id="memberLabel">登録メンバー</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="eventCount">6</div>
+                    <div class="stat-card" onclick="openTab(event, 'events'); document.getElementById('tabEvents').click();">
+                        <div class="stat-number" id="eventCount">3</div>
                         <div class="stat-label" id="eventLabel">今後のイベント</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card" onclick="alert(currentLang === 'ja' ? 'LINE、WhatsApp、Slackの3つのチャネルで活動中' : 'Active on 3 channels: LINE, WhatsApp, Slack');">
                         <div class="stat-number" id="channelCount">3</div>
                         <div class="stat-label" id="channelLabel">連絡チャネル</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="projectCount">4</div>
+                    <div class="stat-card" onclick="openTab(event, 'projects'); document.getElementById('tabProjects').click();">
+                        <div class="stat-number" id="projectCount">3</div>
                         <div class="stat-label" id="projectLabel">進行中プロジェクト</div>
                     </div>
                 </div>
-
-                <div class="section">
-                    <h2 id="platformTitle">分散した連絡手段を、1つのコミュニティ基盤へ。</h2>
-                    <p id="platformDesc">LINE、WhatsApp、Slackに分かれた連絡を整理し、メンバー発見、イベント共有、参加希望、自己紹介を一元化する試作版です。</p>
-                </div>
             </div>
 
-            <!-- Members Tab (Combined with Introduction) -->
+            <!-- Members Tab -->
             <div id="members" class="tab-content">
                 <div class="section">
-                    <h2 id="membersIntroTitle">SGAC Japanについて</h2>
-                    <p id="membersIntroDesc">Space Generation Advisory Council (SGAC)は、宇宙分野の次世代リーダーを育成する国際ネットワークです。日本支部では、学生や若手専門家が交流し、宇宙政策や技術開発に関する活動を行っています。</p>
-                </div>
-
-                <div class="section">
-                    <h2 id="addMemberTitle">新しいメンバーを追加</h2>
-                    <form id="memberForm">
-                        <div class="form-group">
-                            <label id="labelName">名前</label>
-                            <input type="text" id="memberName" required>
+                    <div class="collapsible-header" onclick="toggleCollapsible(this)" id="addMemberHeader">
+                        新しいメンバーを追加
+                    </div>
+                    <div class="collapsible-content">
+                        <div class="form-inner">
+                            <form id="memberForm">
+                                <div class="form-group">
+                                    <label id="labelName">名前</label>
+                                    <input type="text" id="memberName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelSgacUsername">SGACユーザー名</label>
+                                    <input type="text" id="memberSgacUsername">
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelRole">役割 / 専門分野</label>
+                                    <input type="text" id="memberRole" required>
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelOrg">所属組織</label>
+                                    <input type="text" id="memberOrg" required>
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelMajor">専攻</label>
+                                    <input type="text" id="memberMajor">
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelInterests">興味・関心</label>
+                                    <input type="text" id="memberInterests" placeholder="例: 宇宙政策, 衛星開発">
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelHobby">趣味</label>
+                                    <input type="text" id="memberHobby">
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelCommunity">参加しているコミュニティ</label>
+                                    <div class="checkbox-group">
+                                        <label><input type="checkbox" name="community" value="LINE"> LINE</label>
+                                        <label><input type="checkbox" name="community" value="WhatsApp"> WhatsApp</label>
+                                        <label><input type="checkbox" name="community" value="Slack"> Slack</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelSocialUrl">SNSプロフィールURL</label>
+                                    <input type="url" id="memberSocialUrl" placeholder="例: https://twitter.com/username">
+                                </div>
+                                <button type="submit" class="primary" id="btnAddMember">メンバーを追加</button>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label id="labelRole">役割 / 専門分野</label>
-                            <input type="text" id="memberRole" required>
-                        </div>
-                        <div class="form-group">
-                            <label id="labelOrg">所属組織</label>
-                            <input type="text" id="memberOrg" required>
-                        </div>
-                        <div class="form-group">
-                            <label id="labelEmail">メールアドレス</label>
-                            <input type="email" id="memberEmail" required>
-                        </div>
-                        <button type="submit" class="primary" id="btnAddMember">メンバーを追加</button>
-                    </form>
+                    </div>
                 </div>
 
                 <div class="section">
@@ -484,26 +615,40 @@
             <!-- Events Tab -->
             <div id="events" class="tab-content">
                 <div class="section">
-                    <h2 id="addEventTitle">新しいイベントを追加</h2>
-                    <form id="eventForm">
-                        <div class="form-group">
-                            <label id="labelEventName">イベント名</label>
-                            <input type="text" id="eventName" required>
+                    <div class="collapsible-header" onclick="toggleCollapsible(this)" id="addEventHeader">
+                        新しいイベントを追加
+                    </div>
+                    <div class="collapsible-content">
+                        <div class="form-inner">
+                            <form id="eventForm">
+                                <div class="form-group">
+                                    <label id="labelEventName">イベント名</label>
+                                    <input type="text" id="eventName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelEventDate">日時</label>
+                                    <input type="datetime-local" id="eventDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelEventLocation">場所</label>
+                                    <input type="text" id="eventLocation" required>
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelEventUrl">イベントURL</label>
+                                    <input type="url" id="eventUrl" placeholder="例: https://example.com/event">
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelEventJoin">参加方法</label>
+                                    <textarea id="eventJoin" rows="2" placeholder="例: Zoomリンクは前日にメールで送信されます"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelEventDesc">説明</label>
+                                    <textarea id="eventDesc" rows="3" required></textarea>
+                                </div>
+                                <button type="submit" class="primary" id="btnAddEvent">イベントを追加</button>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label id="labelEventDate">日時</label>
-                            <input type="datetime-local" id="eventDate" required>
-                        </div>
-                        <div class="form-group">
-                            <label id="labelEventLocation">場所</label>
-                            <input type="text" id="eventLocation" required>
-                        </div>
-                        <div class="form-group">
-                            <label id="labelEventDesc">説明</label>
-                            <textarea id="eventDesc" rows="3" required></textarea>
-                        </div>
-                        <button type="submit" class="primary" id="btnAddEvent">イベントを追加</button>
-                    </form>
+                    </div>
                 </div>
 
                 <div class="section">
@@ -515,26 +660,39 @@
             <!-- Projects Tab -->
             <div id="projects" class="tab-content">
                 <div class="section">
-                    <h2 id="addProjectTitle">新しいプロジェクトを追加</h2>
-                    <form id="projectForm">
-                        <div class="form-group">
-                            <label id="labelProjectName">プロジェクト名</label>
-                            <input type="text" id="projectName" required>
+                    <div class="collapsible-header" onclick="toggleCollapsible(this)" id="addProjectHeader">
+                        新しいプロジェクトを追加
+                    </div>
+                    <div class="collapsible-content">
+                        <div class="form-inner">
+                            <form id="projectForm">
+                                <div class="form-group">
+                                    <label id="labelProjectName">プロジェクト名</label>
+                                    <input type="text" id="projectName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelProjectStatus">ステータス</label>
+                                    <select id="projectStatus">
+                                        <option value="planning">企画中</option>
+                                        <option value="active">進行中</option>
+                                        <option value="completed">完了</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelProjectRecruiting">メンバー募集状況</label>
+                                    <select id="projectRecruiting">
+                                        <option value="recruiting">メンバー募集中</option>
+                                        <option value="not-recruiting">募集なし</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelProjectDesc">説明</label>
+                                    <textarea id="projectDesc" rows="3" required></textarea>
+                                </div>
+                                <button type="submit" class="primary" id="btnAddProject">プロジェクトを追加</button>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label id="labelProjectStatus">ステータス</label>
-                            <select id="projectStatus">
-                                <option value="planning">企画中</option>
-                                <option value="active">進行中</option>
-                                <option value="completed">完了</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label id="labelProjectDesc">説明</label>
-                            <textarea id="projectDesc" rows="3" required></textarea>
-                        </div>
-                        <button type="submit" class="primary" id="btnAddProject">プロジェクトを追加</button>
-                    </form>
+                    </div>
                 </div>
 
                 <div class="section">
@@ -546,84 +704,87 @@
     </div>
 
     <script>
-        console.log('SGAC Japan Connect - Page loaded');
-
-        // Language translations
         const translations = {
             ja: {
-                headerTitle: "SGAC Japan Connect",
-                headerSubtitle: "スペース世代諮問委員会 日本支部",
+                headerTitle: "SGAC Japan",
                 langButton: "English",
                 tabDashboard: "ダッシュボード",
                 tabMembers: "メンバー紹介",
                 tabEvents: "イベント",
                 tabProjects: "プロジェクト",
                 dashTitle: "ダッシュボード",
-                dashDesc: "SGAC Japanのメンバー、イベント、コミュニティ、プロジェクトを1つにまとめます。",
+                dashDesc: "Space Generation Advisory Council (SGAC)は、宇宙分野の次世代リーダーを育成する国際ネットワークです。日本支部では、学生や若手専門家が交流し、宇宙政策や技術開発に関する活動を行っています。",
                 memberLabel: "登録メンバー",
                 eventLabel: "今後のイベント",
                 channelLabel: "連絡チャネル",
                 projectLabel: "進行中プロジェクト",
-                platformTitle: "分散した連絡手段を、1つのコミュニティ基盤へ。",
-                platformDesc: "LINE、WhatsApp、Slackに分かれた連絡を整理し、メンバー発見、イベント共有、参加希望、自己紹介を一元化する試作版です。",
-                membersIntroTitle: "SGAC Japanについて",
-                membersIntroDesc: "Space Generation Advisory Council (SGAC)は、宇宙分野の次世代リーダーを育成する国際ネットワークです。日本支部では、学生や若手専門家が交流し、宇宙政策や技術開発に関する活動を行っています。",
-                addMemberTitle: "新しいメンバーを追加",
+                addMemberHeader: "新しいメンバーを追加",
                 labelName: "名前",
+                labelSgacUsername: "SGACユーザー名",
                 labelRole: "役割 / 専門分野",
                 labelOrg: "所属組織",
-                labelEmail: "メールアドレス",
+                labelMajor: "専攻",
+                labelInterests: "興味・関心",
+                labelHobby: "趣味",
+                labelCommunity: "参加しているコミュニティ",
+                labelSocialUrl: "SNSプロフィールURL",
                 btnAddMember: "メンバーを追加",
                 memberListTitle: "メンバー一覧",
-                addEventTitle: "新しいイベントを追加",
+                addEventHeader: "新しいイベントを追加",
                 labelEventName: "イベント名",
                 labelEventDate: "日時",
                 labelEventLocation: "場所",
+                labelEventUrl: "イベントURL",
+                labelEventJoin: "参加方法",
                 labelEventDesc: "説明",
                 btnAddEvent: "イベントを追加",
                 eventListTitle: "今後のイベント",
-                addProjectTitle: "新しいプロジェクトを追加",
+                addProjectHeader: "新しいプロジェクトを追加",
                 labelProjectName: "プロジェクト名",
                 labelProjectStatus: "ステータス",
+                labelProjectRecruiting: "メンバー募集状況",
                 labelProjectDesc: "説明",
                 btnAddProject: "プロジェクトを追加",
                 projectListTitle: "プロジェクト一覧"
             },
             en: {
-                headerTitle: "SGAC Japan Connect",
-                headerSubtitle: "Space Generation Advisory Council - Japan",
+                headerTitle: "SGAC Japan",
                 langButton: "日本語",
                 tabDashboard: "Dashboard",
                 tabMembers: "Members",
                 tabEvents: "Events",
                 tabProjects: "Projects",
                 dashTitle: "Dashboard",
-                dashDesc: "Bringing together SGAC Japan members, events, community, and projects in one place.",
+                dashDesc: "The Space Generation Advisory Council (SGAC) is an international network fostering next-generation leaders in the space sector. The Japan chapter connects students and young professionals to engage in activities related to space policy and technology development.",
                 memberLabel: "Registered Members",
                 eventLabel: "Upcoming Events",
                 channelLabel: "Communication Channels",
                 projectLabel: "Active Projects",
-                platformTitle: "From Scattered Communication to One Community Platform",
-                platformDesc: "A prototype to organize communication across LINE, WhatsApp, and Slack, unifying member discovery, event sharing, participation requests, and introductions.",
-                membersIntroTitle: "About SGAC Japan",
-                membersIntroDesc: "The Space Generation Advisory Council (SGAC) is an international network fostering next-generation leaders in the space sector. The Japan chapter connects students and young professionals to engage in activities related to space policy and technology development.",
-                addMemberTitle: "Add New Member",
+                addMemberHeader: "Add New Member",
                 labelName: "Name",
+                labelSgacUsername: "SGAC Username",
                 labelRole: "Role / Expertise",
                 labelOrg: "Organization",
-                labelEmail: "Email Address",
+                labelMajor: "Academic Major",
+                labelInterests: "Interests",
+                labelHobby: "Hobby",
+                labelCommunity: "Joined Communities",
+                labelSocialUrl: "Social Media Profile URL",
                 btnAddMember: "Add Member",
                 memberListTitle: "Member List",
-                addEventTitle: "Add New Event",
+                addEventHeader: "Add New Event",
                 labelEventName: "Event Name",
                 labelEventDate: "Date & Time",
                 labelEventLocation: "Location",
+                labelEventUrl: "Event URL",
+                labelEventJoin: "How to Join",
                 labelEventDesc: "Description",
                 btnAddEvent: "Add Event",
                 eventListTitle: "Upcoming Events",
-                addProjectTitle: "Add New Project",
+                addProjectHeader: "Add New Project",
                 labelProjectName: "Project Name",
                 labelProjectStatus: "Status",
+                labelProjectRecruiting: "Recruiting Status",
                 labelProjectDesc: "Description",
                 btnAddProject: "Add Project",
                 projectListTitle: "Project List"
@@ -632,37 +793,35 @@
 
         let currentLang = 'ja';
         let members = [
-            {name: "田中 太郎", role: "宇宙政策研究者", org: "東京大学", email: "tanaka@example.com"},
-            {name: "佐藤 花子", role: "衛星エンジニア", org: "JAXA", email: "sato@example.com"},
-            {name: "鈴木 一郎", role: "宇宙起業家", org: "Space Ventures JP", email: "suzuki@example.com"},
-            {name: "山田 美咲", role: "天文学研究者", org: "国立天文台", email: "yamada@example.com"}
+            {name: "田中 太郎", sgacUsername: "tanaka_taro", role: "宇宙政策研究者", org: "東京大学", major: "航空宇宙工学", interests: "宇宙政策, 国際協力", hobby: "読書", communities: ["LINE", "Slack"], socialUrl: ""},
+            {name: "佐藤 花子", sgacUsername: "sato_hanako", role: "衛星エンジニア", org: "JAXA", major: "電気工学", interests: "衛星開発, リモートセンシング", hobby: "写真撮影", communities: ["WhatsApp", "Slack"], socialUrl: ""},
+            {name: "鈴木 一郎", sgacUsername: "suzuki_ichiro", role: "宇宙起業家", org: "Space Ventures JP", major: "経営学", interests: "宇宙ビジネス, スタートアップ", hobby: "ネットワーキング", communities: ["LINE", "WhatsApp"], socialUrl: ""},
+            {name: "山田 美咲", sgacUsername: "yamada_misaki", role: "天文学研究者", org: "国立天文台", major: "天文学", interests: "惑星科学, 天体観測", hobby: "星空観察", communities: ["Slack"], socialUrl: ""}
         ];
 
         let events = [
-            {name: "SGAC月例ミーティング", date: "2026-05-20T19:00", location: "オンライン", desc: "今月の活動報告と次回イベントの企画"},
-            {name: "宇宙政策ワークショップ", date: "2026-06-05T14:00", location: "東京", desc: "日本の宇宙政策の最新動向について議論"},
-            {name: "ネットワーキングイベント", date: "2026-06-15T18:30", location: "渋谷", desc: "宇宙業界の若手専門家との交流会"}
+            {name: "SGAC月例ミーティング", date: "2026-05-20T19:00", location: "オンライン", url: "", join: "Zoomリンクは開催前日にメールで送信", desc: "今月の活動報告と次回イベントの企画"},
+            {name: "宇宙政策ワークショップ", date: "2026-06-05T14:00", location: "東京", url: "https://example.com/workshop", join: "事前登録が必要です", desc: "日本の宇宙政策の最新動向について議論"},
+            {name: "ネットワーキングイベント", date: "2026-06-15T18:30", location: "渋谷", url: "", join: "当日参加も可能", desc: "宇宙業界の若手専門家との交流会"}
         ];
 
         let projects = [
-            {name: "学生衛星プロジェクト", status: "active", desc: "大学生による小型衛星の設計と開発"},
-            {name: "宇宙教育プログラム", status: "planning", desc: "小中学生向けの宇宙教育ワークショップの企画"},
-            {name: "宇宙スタートアップ調査", status: "active", desc: "日本の宇宙スタートアップの現状調査レポート"}
+            {name: "学生衛星プロジェクト", status: "active", recruiting: "recruiting", desc: "大学生による小型衛星の設計と開発"},
+            {name: "宇宙教育プログラム", status: "planning", recruiting: "recruiting", desc: "小中学生向けの宇宙教育ワークショップの企画"},
+            {name: "宇宙スタートアップ調査", status: "active", recruiting: "not-recruiting", desc: "日本の宇宙スタートアップの現状調査レポート"}
         ];
 
-        // Initialize the app
+        let editingIndex = -1;
+        let editingType = '';
+
         function init() {
-            console.log('Initializing app...');
             renderMembers();
             renderEvents();
             renderProjects();
             updateStats();
-            console.log('App initialized successfully');
         }
 
-        // Tab switching
         function openTab(evt, tabName) {
-            console.log('Opening tab:', tabName);
             const tabContents = document.getElementsByClassName('tab-content');
             const tabButtons = document.getElementsByClassName('tab-button');
 
@@ -678,13 +837,16 @@
             evt.currentTarget.classList.add('active');
         }
 
-        // Language toggle - updates ALL content immediately
+        function toggleCollapsible(element) {
+            element.classList.toggle('active');
+            const content = element.nextElementSibling;
+            content.classList.toggle('active');
+        }
+
         function toggleLanguage() {
             currentLang = currentLang === 'ja' ? 'en' : 'ja';
-            console.log('Language changed to:', currentLang);
             const t = translations[currentLang];
 
-            // Update all text elements
             Object.keys(t).forEach(key => {
                 const element = document.getElementById(key);
                 if (element) {
@@ -699,20 +861,17 @@
                 }
             });
 
-            // Re-render all dynamic content with new language
             renderMembers();
             renderEvents();
             renderProjects();
         }
 
-        // Update statistics
         function updateStats() {
             document.getElementById('memberCount').textContent = members.length;
             document.getElementById('eventCount').textContent = events.length;
-            document.getElementById('projectCount').textContent = projects.length;
+            document.getElementById('projectCount').textContent = projects.filter(p => p.status === 'active').length;
         }
 
-        // Render members
         function renderMembers() {
             const memberList = document.getElementById('memberList');
             if (members.length === 0) {
@@ -722,17 +881,29 @@
                 return;
             }
 
-            memberList.innerHTML = members.map(member => `
+            memberList.innerHTML = members.map((member, index) => `
                 <div class="member-card">
+                    <div class="card-actions">
+                        <button class="action-btn edit-btn" onclick="editMember(${index})" title="${currentLang === 'ja' ? '編集' : 'Edit'}">✏️</button>
+                        <button class="action-btn delete-btn" onclick="deleteMember(${index})" title="${currentLang === 'ja' ? '削除' : 'Delete'}">🗑️</button>
+                    </div>
                     <div class="member-name">${member.name}</div>
+                    ${member.sgacUsername ? `<div class="member-info">@${member.sgacUsername}</div>` : ''}
                     <div class="member-role">${member.role}</div>
                     <div class="member-info">${currentLang === 'ja' ? '所属' : 'Org'}: ${member.org}</div>
-                    <div class="member-info">${currentLang === 'ja' ? 'Email' : 'Email'}: ${member.email}</div>
+                    ${member.major ? `<div class="member-info">${currentLang === 'ja' ? '専攻' : 'Major'}: ${member.major}</div>` : ''}
+                    ${member.interests ? `<div class="member-info">${currentLang === 'ja' ? '関心' : 'Interests'}: ${member.interests}</div>` : ''}
+                    ${member.hobby ? `<div class="member-info">${currentLang === 'ja' ? '趣味' : 'Hobby'}: ${member.hobby}</div>` : ''}
+                    ${member.communities && member.communities.length > 0 ? `
+                        <div class="member-tags">
+                            ${member.communities.map(c => `<span class="tag">${c}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                    ${member.socialUrl ? `<div class="member-info"><a href="${member.socialUrl}" target="_blank" style="color: var(--accent-pink);">SNS Profile</a></div>` : ''}
                 </div>
             `).join('');
         }
 
-        // Render events
         function renderEvents() {
             const eventList = document.getElementById('eventList');
             if (events.length === 0) {
@@ -742,17 +913,22 @@
                 return;
             }
 
-            eventList.innerHTML = events.map(event => `
+            eventList.innerHTML = events.map((event, index) => `
                 <div class="event-card">
+                    <div class="card-actions">
+                        <button class="action-btn edit-btn" onclick="editEvent(${index})" title="${currentLang === 'ja' ? '編集' : 'Edit'}">✏️</button>
+                        <button class="action-btn delete-btn" onclick="deleteEvent(${index})" title="${currentLang === 'ja' ? '削除' : 'Delete'}">🗑️</button>
+                    </div>
                     <div class="event-title">${event.name}</div>
                     <div class="event-date">${new Date(event.date).toLocaleString(currentLang === 'ja' ? 'ja-JP' : 'en-US')}</div>
                     <p style="margin: 5px 0;">${currentLang === 'ja' ? '場所' : 'Location'}: ${event.location}</p>
-                    <p style="color: #666;">${event.desc}</p>
+                    ${event.url ? `<a href="${event.url}" target="_blank" class="event-link">${currentLang === 'ja' ? 'イベント詳細' : 'Event Details'} →</a>` : ''}
+                    ${event.join ? `<p style="margin: 5px 0; color: var(--accent-pink);"><strong>${currentLang === 'ja' ? '参加方法' : 'How to Join'}:</strong> ${event.join}</p>` : ''}
+                    <p style="color: #666; margin-top: 10px;">${event.desc}</p>
                 </div>
             `).join('');
         }
 
-        // Render projects
         function renderProjects() {
             const projectList = document.getElementById('projectList');
             if (projects.length === 0) {
@@ -768,72 +944,212 @@
                 completed: currentLang === 'ja' ? '完了' : 'Completed'
             };
 
-            projectList.innerHTML = projects.map(project => `
+            const recruitingLabels = {
+                recruiting: currentLang === 'ja' ? 'メンバー募集中' : 'Recruiting',
+                'not-recruiting': currentLang === 'ja' ? '募集なし' : 'Not Recruiting'
+            };
+
+            projectList.innerHTML = projects.map((project, index) => `
                 <div class="event-card">
+                    <div class="card-actions">
+                        <button class="action-btn edit-btn" onclick="editProject(${index})" title="${currentLang === 'ja' ? '編集' : 'Edit'}">✏️</button>
+                        <button class="action-btn delete-btn" onclick="deleteProject(${index})" title="${currentLang === 'ja' ? '削除' : 'Delete'}">🗑️</button>
+                    </div>
                     <div class="event-title">${project.name}</div>
                     <div class="event-date">${currentLang === 'ja' ? 'ステータス' : 'Status'}: ${statusLabels[project.status]}</div>
-                    <p style="color: #666;">${project.desc}</p>
+                    ${project.recruiting === 'recruiting' ? `<p style="color: var(--accent-pink); font-weight: 600; margin: 5px 0;">🔔 ${recruitingLabels[project.recruiting]}</p>` : ''}
+                    <p style="color: #666; margin-top: 10px;">${project.desc}</p>
                 </div>
             `).join('');
+        }
+
+        // Member CRUD
+        function deleteMember(index) {
+            if (confirm(currentLang === 'ja' ? 'このメンバーを削除しますか？' : 'Delete this member?')) {
+                members.splice(index, 1);
+                renderMembers();
+                updateStats();
+            }
+        }
+
+        function editMember(index) {
+            const member = members[index];
+            document.getElementById('memberName').value = member.name;
+            document.getElementById('memberSgacUsername').value = member.sgacUsername || '';
+            document.getElementById('memberRole').value = member.role;
+            document.getElementById('memberOrg').value = member.org;
+            document.getElementById('memberMajor').value = member.major || '';
+            document.getElementById('memberInterests').value = member.interests || '';
+            document.getElementById('memberHobby').value = member.hobby || '';
+            document.getElementById('memberSocialUrl').value = member.socialUrl || '';
+
+            document.querySelectorAll('input[name="community"]').forEach(cb => {
+                cb.checked = member.communities && member.communities.includes(cb.value);
+            });
+
+            editingIndex = index;
+            editingType = 'member';
+
+            const header = document.getElementById('addMemberHeader');
+            if (!header.classList.contains('active')) {
+                toggleCollapsible(header);
+            }
+
+            document.getElementById('btnAddMember').textContent = currentLang === 'ja' ? '更新' : 'Update';
+
+            document.getElementById('members').scrollIntoView({behavior: 'smooth'});
+            document.getElementById('tabMembers').click();
+        }
+
+        // Event CRUD
+        function deleteEvent(index) {
+            if (confirm(currentLang === 'ja' ? 'このイベントを削除しますか？' : 'Delete this event?')) {
+                events.splice(index, 1);
+                renderEvents();
+                updateStats();
+            }
+        }
+
+        function editEvent(index) {
+            const event = events[index];
+            document.getElementById('eventName').value = event.name;
+            document.getElementById('eventDate').value = event.date;
+            document.getElementById('eventLocation').value = event.location;
+            document.getElementById('eventUrl').value = event.url || '';
+            document.getElementById('eventJoin').value = event.join || '';
+            document.getElementById('eventDesc').value = event.desc;
+
+            editingIndex = index;
+            editingType = 'event';
+
+            const header = document.getElementById('addEventHeader');
+            if (!header.classList.contains('active')) {
+                toggleCollapsible(header);
+            }
+
+            document.getElementById('btnAddEvent').textContent = currentLang === 'ja' ? '更新' : 'Update';
+
+            document.getElementById('events').scrollIntoView({behavior: 'smooth'});
+            document.getElementById('tabEvents').click();
+        }
+
+        // Project CRUD
+        function deleteProject(index) {
+            if (confirm(currentLang === 'ja' ? 'このプロジェクトを削除しますか？' : 'Delete this project?')) {
+                projects.splice(index, 1);
+                renderProjects();
+                updateStats();
+            }
+        }
+
+        function editProject(index) {
+            const project = projects[index];
+            document.getElementById('projectName').value = project.name;
+            document.getElementById('projectStatus').value = project.status;
+            document.getElementById('projectRecruiting').value = project.recruiting || 'not-recruiting';
+            document.getElementById('projectDesc').value = project.desc;
+
+            editingIndex = index;
+            editingType = 'project';
+
+            const header = document.getElementById('addProjectHeader');
+            if (!header.classList.contains('active')) {
+                toggleCollapsible(header);
+            }
+
+            document.getElementById('btnAddProject').textContent = currentLang === 'ja' ? '更新' : 'Update';
+
+            document.getElementById('projects').scrollIntoView({behavior: 'smooth'});
+            document.getElementById('tabProjects').click();
         }
 
         // Form handlers
         document.getElementById('memberForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const newMember = {
+
+            const selectedCommunities = Array.from(document.querySelectorAll('input[name="community"]:checked')).map(cb => cb.value);
+
+            const memberData = {
                 name: document.getElementById('memberName').value,
+                sgacUsername: document.getElementById('memberSgacUsername').value,
                 role: document.getElementById('memberRole').value,
                 org: document.getElementById('memberOrg').value,
-                email: document.getElementById('memberEmail').value
+                major: document.getElementById('memberMajor').value,
+                interests: document.getElementById('memberInterests').value,
+                hobby: document.getElementById('memberHobby').value,
+                communities: selectedCommunities,
+                socialUrl: document.getElementById('memberSocialUrl').value
             };
-            members.push(newMember);
+
+            if (editingType === 'member' && editingIndex >= 0) {
+                members[editingIndex] = memberData;
+                editingIndex = -1;
+                editingType = '';
+                document.getElementById('btnAddMember').textContent = currentLang === 'ja' ? 'メンバーを追加' : 'Add Member';
+            } else {
+                members.push(memberData);
+            }
+
             renderMembers();
             updateStats();
             this.reset();
-            alert(currentLang === 'ja' ? 'メンバーが追加されました!' : 'Member added successfully!');
+            alert(currentLang === 'ja' ? 'メンバー情報を保存しました！' : 'Member saved successfully!');
         });
 
         document.getElementById('eventForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const newEvent = {
+
+            const eventData = {
                 name: document.getElementById('eventName').value,
                 date: document.getElementById('eventDate').value,
                 location: document.getElementById('eventLocation').value,
+                url: document.getElementById('eventUrl').value,
+                join: document.getElementById('eventJoin').value,
                 desc: document.getElementById('eventDesc').value
             };
-            events.push(newEvent);
+
+            if (editingType === 'event' && editingIndex >= 0) {
+                events[editingIndex] = eventData;
+                editingIndex = -1;
+                editingType = '';
+                document.getElementById('btnAddEvent').textContent = currentLang === 'ja' ? 'イベントを追加' : 'Add Event';
+            } else {
+                events.push(eventData);
+            }
+
             renderEvents();
             updateStats();
             this.reset();
-            alert(currentLang === 'ja' ? 'イベントが追加されました!' : 'Event added successfully!');
+            alert(currentLang === 'ja' ? 'イベントを保存しました！' : 'Event saved successfully!');
         });
 
         document.getElementById('projectForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const newProject = {
+
+            const projectData = {
                 name: document.getElementById('projectName').value,
                 status: document.getElementById('projectStatus').value,
+                recruiting: document.getElementById('projectRecruiting').value,
                 desc: document.getElementById('projectDesc').value
             };
-            projects.push(newProject);
+
+            if (editingType === 'project' && editingIndex >= 0) {
+                projects[editingIndex] = projectData;
+                editingIndex = -1;
+                editingType = '';
+                document.getElementById('btnAddProject').textContent = currentLang === 'ja' ? 'プロジェクトを追加' : 'Add Project';
+            } else {
+                projects.push(projectData);
+            }
+
             renderProjects();
             updateStats();
             this.reset();
-            alert(currentLang === 'ja' ? 'プロジェクトが追加されました!' : 'Project added successfully!');
+            alert(currentLang === 'ja' ? 'プロジェクトを保存しました！' : 'Project saved successfully!');
         });
 
-        // Initialize on page load
-        window.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, initializing...');
-            init();
-        });
-
-        // Backup initialization
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-        } else {
-            init();
-        }
+        window.addEventListener('DOMContentLoaded', init);
+        if (document.readyState !== 'loading') init();
     </script>
 </body>
 </html>
